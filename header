@@ -1,0 +1,9 @@
+#ifndef FUNKTIONEN_VON_LEIF
+#define FUNKTIONEN_VON_LEIF
+
+void hamburgmonatsmittel(double städte[12], double tage[12], double hamburgtag[12]);		//Funktion errechnet Monatsmittel für Hamburg
+
+void mittlereglobalstrahlung(double städte[12]);						//Funktion für Berechnung der mittleren Globalstrahlung
+
+#endif
+
