@@ -3,7 +3,9 @@
 
 void hamburgmonatsmittel(double städte[12], double tage[12], double hamburgtag[12]);		//Funktion errechnet Monatsmittel für Hamburg
 
-void mittlereglobalstrahlung(double städte[12]);						//Funktion für Berechnung der mittleren Globalstrahlung
+void mittlereglobalstrahlung(double städte[12], double neigungsfaktor[12], char namen[10], char text[40], double peak);						//Funktion für Berechnung der mittleren Globalstrahlung
 
+short getShortMinMax(char text[], short min, short max);
+
+double getDoubleMinMax(char text[], double min, double max);
 #endif
-
