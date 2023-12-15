@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "get.h"
+//#define AUFGABE1
 
 int main(void) {
 
@@ -11,18 +12,39 @@ int main(void) {
 		{1.63,1.54,1.15,0.98,0.85,0.81,0.83,0.92,1.14,1.38,1.68,1.61},
 		{1,1,1,1,1,1,1,1,1,1,1,1} };
 	double städte[5][12] = {
-		{19,33,75,128,160,158,134,94,51,26,15},
+		{19,33,75,128,160,166,158,134,94,51,26,15},
 		{20,34,77,123,150,162,154,132,90,52,25,16},
 		{29,45,85,130,153,174,164,140,99,62,36,24},
 		{29,45,84,129,153,172,166,141,104,63,38,24},
 		{0,0,0,0,0,0,0,0,0,0,0,0} };
+	char namen[5][10] = { {"Berlin"}, {"Kassel"}, {"Stuttgart"},{"Freiburg"},{"Hamburg"} };
+	
 
 	hamburgmonatsmittel(städte[4], tage, hamburgtag);				//Berechne die Monatsmittel und speichere sie im Array
 
+#ifdef AUFGABE1
+
 	//Aufgabenteil 1
 
+	printf("Aufgabe 1:\n");
+	mittlereglobalstrahlung(städte[4], neigungsfaktor[3], namen[4], "Die mittlere globalstrahlung fuer", 1);
 
+	//Aufgabenteil 2
 
+	printf("\n\nAufgabe 2:\n");
+	
+	mittlereglobalstrahlung(städte[4], neigungsfaktor[0], namen[4], "30 Grad Neigung", 1);
+	mittlereglobalstrahlung(städte[4], neigungsfaktor[2], namen[4], "60 grad Neigung", 1);
+	
+#else
 
+	//Aufgabe 4
+
+	short stadt = getShortMinMax("Bitte waehlen Sie einen Ort aus (0 = Berlin, 1 = Kassel, 2 = Stuttgart, 3 = Freiburg, 4 = Hamburg)", 0, 4);
+	short neigung = getShortMinMax("Wie wird die Anlage ausgerichtet (0 = 30 Grad Sued, 1 = 45 Grad Sued, 2 = 60 Grad Sued, 3 = Horizontal", 0, 3);
+	double peak = getDoubleMinMax("Wie gross ist die Spitzenleistung (kWp) (1 - 30)", 1.00, 30.00);
+	mittlereglobalstrahlung(städte[stadt], neigungsfaktor[neigung], namen[stadt], "Die mittlere Globalstrahlung fuer", peak);
+
+#endif
 	return 0;
 }
