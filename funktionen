@@ -1,5 +1,3 @@
-#include "get.h"
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 //Funktion zur Berechnung der Monatsmittel in Hamburg
@@ -16,10 +14,94 @@ void hamburgmonatsmittel(double städte[12], double tage[12], double hamburgtag[
 }
 
 //Funktion für Berechnung der mittleren Globalstrahlung
-void mittlereglobalstrahlung(double städte[12]) {
+void mittlereglobalstrahlung(double städte[12], double neigungsfaktor[12], char namen[10], char text[40], double peak) {
+
+	double gesamt = 0;
+	double monneig[12];
+
+	printf("%s %s:\n\n", text, namen);
+	printf("  Jan  -  Feb  -  Mar  -  Apr  -  Mai  -  Jun  -  Jul  -  Aug  -  Sep  -  Okt  -  Nov  -  Dez  | |  Gesamt [kWh]\n");
 
 	for (int i = 0; i < 12; i++) {
-
+		monneig[i] = städte[i] * neigungsfaktor[i]* peak;
+		printf("%6.0lf |", monneig[i]);
+		gesamt = gesamt + monneig[i];
 	}
+	printf(" | %.0lf\n\n", gesamt);
+
+	FILE* out = NULL;
+	out = fopen("PV-Modul", "wt");
+	if (out == NULL)
+		printf("Konnte Ausgabedatei nicht \224ffnen: Beispiel.dat\n");
+
+	if (out) {
+		fprintf(out, "%s %s:\n\n", text, namen);
+		fprintf(out, "  Jan  -  Feb  -  Mar  -  Apr  -  Mai  -  Jun  -  Jul  -  Aug  -  Sep  -  Okt  -  Nov  -  Dez  | |  Gesamt [kWh]\n");
+
+		for (int i = 0; i < 12; i++) {
+			monneig[i] = städte[i] * neigungsfaktor[i] * peak;
+			fprintf(out, "%6.0lf |", monneig[i]);
+		}
+		fprintf(out," | %.0lf\n\n", gesamt);
+	}
+
+	if (out) fclose(out);
+}
+
+short getShortMinMax(
+	char text[], short min, short max)
+{
+	short value;														//Variable für die Annahme des Tps
+	int finished = 0;													//variable zur Bestätigung eines erfolgreichen Tips
+	char ch;															//Variable zur Überprüfung von ungültigen Zeichen hinter der Zahl
+	int retVal;															//Variable zur überprüfung von scanf
+
+	do {
+
+		printf("%s: ", text);
+		ch = '\0';
+		retVal = scanf("%hd%c", &value, &ch);
+
+		if (retVal != 2) printf("Das war keine korrekte Zahl!\n");
+		else if (ch != '\n') printf("Unerwartete Zeichen hinter der Zahl!\n");
+		else if (value < min || value > max) printf("Keine gueltige Eingabe!\n");
+		else finished = 1;
+
+
+		while (ch != '\n') retVal = scanf("%c", &ch);
+
+
+	} while (!finished);
+
+	return value;
+
+}
+
+double getDoubleMinMax(
+	char text[], double min, double max)
+{
+	double value;														//Variable für die Annahme des Tps
+	int finished = 0;													//variable zur Bestätigung eines erfolgreichen Tips
+	char ch;															//Variable zur Überprüfung von ungültigen Zeichen hinter der Zahl
+	int retVal;															//Variable zur überprüfung von scanf
+
+	do {
+
+		printf("%s: ", text);
+		ch = '\0';
+		retVal = scanf("%lf%c", &value, &ch);
+
+		if (retVal != 2) printf("Das war keine korrekte Zahl!\n");
+		else if (ch != '\n') printf("Unerwartete Zeichen hinter der Zahl!\n");
+		else if (value < min || value > max) printf("Keine gueltige Eingabe!\n");
+		else finished = 1;
+
+
+		while (ch != '\n') retVal = scanf("%c", &ch);
+
+
+	} while (!finished);
+
+	return value;
 
 }
