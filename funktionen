@@ -1,0 +1,25 @@
+#include "get.h"
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+//Funktion zur Berechnung der Monatsmittel in Hamburg
+void hamburgmonatsmittel(double städte[12], double tage[12], double hamburgtag[12]) {
+
+	double* pstädte = &städte[0];										//pointer zum Array mit den Monatsmitteln
+	
+	for (int i = 0; i < 12; i++) {
+
+		*pstädte = tage[i] * hamburgtag[i];
+		pstädte++;
+	}
+
+}
+
+//Funktion für Berechnung der mittleren Globalstrahlung
+void mittlereglobalstrahlung(double städte[12]) {
+
+	for (int i = 0; i < 12; i++) {
+
+	}
+
+}
