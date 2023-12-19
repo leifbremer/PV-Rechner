@@ -1,51 +1,54 @@
+#include "get.h"
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 //Funktion zur Berechnung der Monatsmittel in Hamburg
-void hamburgmonatsmittel(double städte[12], double tage[12], double hamburgtag[12]) {
+void hamburgmonatsmittel(double monatsmittel[12], double tage[12], double hamburgtag[12]) {
 
-	double* pstädte = &städte[0];										//pointer zum Array mit den Monatsmitteln
+	double* pmonatsmittel = &monatsmittel[0];										//pointer zum Array mit den Monatsmittel
 	
 	for (int i = 0; i < 12; i++) {
-
-		*pstädte = tage[i] * hamburgtag[i];
-		pstädte++;
+		*pmonatsmittel = tage[i] * hamburgtag[i];
+		pmonatsmittel++;
 	}
 
 }
 
-//Funktion für Berechnung der mittleren Globalstrahlung
-void mittlereglobalstrahlung(double städte[12], double neigungsfaktor[12], char namen[10], char text[40], double peak) {
+//Funktion für Berechnung und Ausgabe der mittleren Globalstrahlung
+void mittlereglobalstrahlung(double monatsmittel[12], double neigungsfaktor[13], char namen[10], double peak) {
 
 	double gesamt = 0;
-	double monneig[12];
+	double monatergebnis[12];
 
-	printf("%s %s:\n\n", text, namen);
+	printf("Die mittlere Globaleinstrahlung fuer %s bei einer Neigung von %.0lf Grad und einem peak von %.2lf:\n", namen, neigungsfaktor[12], peak);
 	printf("  Jan  -  Feb  -  Mar  -  Apr  -  Mai  -  Jun  -  Jul  -  Aug  -  Sep  -  Okt  -  Nov  -  Dez  | |  Gesamt [kWh]\n");
 
 	for (int i = 0; i < 12; i++) {
-		monneig[i] = städte[i] * neigungsfaktor[i]* peak;
-		printf("%6.0lf |", monneig[i]);
-		gesamt = gesamt + monneig[i];
+		monatergebnis[i] = monatsmittel[i] * neigungsfaktor[i]* peak;
+		printf("%6.0lf |", monatergebnis[i]);
+		gesamt = gesamt + monatergebnis[i];
 	}
 	printf(" | %.0lf\n\n", gesamt);
 
+	//Ausgabe der Werte als Textdatei
 	FILE* out = NULL;
 	out = fopen("PV-Modul", "wt");
 	if (out == NULL)
 		printf("Konnte Ausgabedatei nicht \224ffnen: Beispiel.dat\n");
 
 	if (out) {
-		fprintf(out, "%s %s:\n\n", text, namen);
+		fprintf(out, "Die mittlere Globaleinstrahlung fuer %s bei einer Neigung von %.0lf Grad und einem peak von %.2lf:\n", namen, neigungsfaktor[12], peak);
 		fprintf(out, "  Jan  -  Feb  -  Mar  -  Apr  -  Mai  -  Jun  -  Jul  -  Aug  -  Sep  -  Okt  -  Nov  -  Dez  | |  Gesamt [kWh]\n");
 
 		for (int i = 0; i < 12; i++) {
-			monneig[i] = städte[i] * neigungsfaktor[i] * peak;
-			fprintf(out, "%6.0lf |", monneig[i]);
+			monatergebnis[i] = monatsmittel[i] * neigungsfaktor[i] * peak;
+			fprintf(out, "%6.0lf |", monatergebnis[i]);
 		}
 		fprintf(out," | %.0lf\n\n", gesamt);
+
+		fclose(out);
 	}
 
-	if (out) fclose(out);
 }
 
 short getShortMinMax(
